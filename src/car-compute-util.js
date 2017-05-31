@@ -155,9 +155,9 @@ let Compute={
       isLessThanSixSeats:true,//是否6座以下
       sellingPrice:9999999999,//裸车价
       capacity:null,//排量 （电动车的排量是空）
-      province:'上海',
+      province:'上海',//提车城市
       sumAssured:999999999,//保额（单位：元）
-      isMadeInChina:true
+      isMadeInChina:true //是否中国制造
     },
 
     /**
