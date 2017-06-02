@@ -6,6 +6,9 @@
 
 ```
 import compute from 'fmt-car-compute'
+／**计算购置税*／
+const purchaseTax =  compute.getPurchaseTax({sellingPrice:100000})
+／**计算车船税*／
 compute.getVehicleAndVesselTax({capacity:1.6,place:'上海'}).then(data=>{
   console.log(data)
 })
