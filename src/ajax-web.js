@@ -77,7 +77,7 @@ let siteEs6 = {
     for (let k in ajaxOptions) {
       options[k] = optionsOverride[k] || ajaxOptions[k];
     }
-    options.async = options.async === false ? false : true;
+    options.async = optionsOverride.async === false ? false : true;
     let xhr = options.xhr = options.xhr || getXHR();
     return new Promise(function (resolve, reject) {
       xhr.open(options.type, options.url, options.async);
@@ -112,7 +112,8 @@ let siteEs6 = {
         if (xhr.readyState == 4) {
           if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304){
             //响应信息返回后处理，在页面提示用户
-            const data = result.data || null
+            // const data = result.data || null
+            const data = JSON.parse(xhr.responseText).data || null
             resolve(data);
             //JSON.parse(xhr.response)
           }
@@ -127,9 +128,9 @@ let siteEs6 = {
               }
             }
             if (_response_json.behavior && _response_json.behavior.content) {
-              site.modal.error(_response_json.behavior.content);
+              // site.modal.error(_response_json.behavior.content);
             } else {
-              site.modal.error('<a href="javascript:void(0);" style="text-decoration: underline;color: #FFF;" onclick="window.location.reload();">亲~网络不给力。点此刷新重试</a>', null, 60000);
+              // site.modal.error('<a href="javascript:void(0);" style="text-decoration: underline;color: #FFF;" onclick="window.location.reload();">亲~网络不给力。点此刷新重试</a>', null, 60000);
             }
 
             reject({

@@ -1,275 +1,283 @@
 <!DOCTYPE html>
+<!--index.html直接用浏览器打开-->
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<meta name="keywords" content="要买车,要买车官网,汽车电商,汽车报价,汽车团购,汽车贷款,30天无理由退车,特价新车,卜广齐,贷款买车，买新车">
-	<meta name="description" content="要买车由易迅创始人及CEO、腾讯原电商副总裁卜广齐创办;提供6个月内新车,国家三包,一价到底,闪电提车,30天无理由退车,目前业务已覆盖近百个城市.消费者可自选交付、车险贷款、精品加装、上牌等服务.">
-	<meta name="mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="format-detection" content="telephone=no"/>
-	<link rel="stylesheet" href="./css/weui.css">
-	<style>
-		.header {
-			width: 100%;
-			height: 50px;
-			line-height: 50px;
-			background-color: rgba(0,0,0,.9);
-			text-align: center;
-			color: #fff;
-		}
-		.weui-input {
-			display: block;
-			width: 90%;
-			border: 1px solid #ccc;
-			margin: 5px auto;
-			height: 40px;
-			border-radius: 5px;
-			font-size: 14px;
-			text-indent: 5px;
-		}
-		.button-wrap {
-			width: 90%;
-			margin: 20px auto;
-		}
-		.js_dialog {
-			display: none;
-		}
-	</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="keywords" content="要买车,要买车官网,汽车电商,汽车报价,汽车团购,汽车贷款,30天无理由退车,特价新车,卜广齐,贷款买车，买新车">
+  <meta name="description" content="要买车由易迅创始人及CEO、腾讯原电商副总裁卜广齐创办;提供6个月内新车,国家三包,一价到底,闪电提车,30天无理由退车,目前业务已覆盖近百个城市.消费者可自选交付、车险贷款、精品加装、上牌等服务.">
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <link rel="stylesheet" href="./css/weui.css">
+  <style>
+    .header {
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      background-color: rgba(0, 0, 0, .9);
+      text-align: center;
+      color: #fff;
+    }
+
+    .weui-input {
+      display: block;
+      width: 90%;
+      border: 1px solid #ccc;
+      margin: 5px auto;
+      height: 40px;
+      border-radius: 5px;
+      font-size: 14px;
+      text-indent: 5px;
+    }
+
+    .button-wrap {
+      width: 90%;
+      margin: 20px auto;
+    }
+
+    .js_dialog {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-	<div class="contenior">
-		<div class="header"> 个人中心Demo</div>
-		<div class="weui-calls">
-			<input id="userPhone" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入号码">
-			<input id="userPassword" class="weui-input" type="password" placeholder="请输入密码">
-			<input id="SMSCode" class="weui-input" type="number" placeholder="请输入验证码">
-			<input id="userNewPassword" class="weui-input" type="password" placeholder="请输入新密码">
-		</div>
+<div class="contenior">
+  <div class="header"> 汽车保险计算</div>
+  <div class="weui-calls">
+    <div class="weui-div">
+      是否新能源车：
+      <label><input name="isPower" type="radio" value="1" onclick="getIsPower()"/> 是&nbsp;</label>
+      <label><input name="isPower" type="radio" value="0" checked onclick="getIsPower()"/> 否&nbsp;</label>
+    </div>
+    <input id="sellingPrice" class="weui-input" type="number" placeholder="请输入裸车价">
+    <input id="capacity" class="weui-input" type="number" placeholder="请输入排量">
+    <input id="province" class="weui-input" type="text" placeholder="请输入提车省" value="上海">
 
-		<div class="button-wrap">
-			<a href="javascript:;" id="getSMSCode" class="weui-btn weui-btn_primary">获取验证码</a>
-		</div>
+    <div class="weui-div">
+      家用6座及以下：
+      <label><input name="isLessThanSixSeats" type="radio" value="1" checked/> 6座以下&nbsp;</label>
+      <label><input name="isLessThanSixSeats" type="radio" value="0"/> 6座及以上&nbsp;</label>
+    </div>
 
-	</div>
-	<div class="js_dialog" id="iosDialog">
-			<div class="weui-mask"></div>
-			<div class="weui-dialog">
-					<div class="weui-dialog__bd">注册成功，快去设置密码吧~</div>
-					<div class="weui-dialog__ft">
-							<a href="javascript:;" id="gotoSetPassword" class="weui-dialog__btn weui-dialog__btn_primary">去设置</a>
-					</div>
-			</div>
-	</div>
-	<script src="../src/ymc.uc.js"></script>
-	<script src="../lib/clientjs.js"></script>
-	<script>
-		(function() {
-			var userPhone = document.getElementById('userPhone');
-			var userCode = document.getElementById('SMSCode');
-			var userPassword = document.getElementById('userPassword');
-			var getSMSCode = document.getElementById('getSMSCode');
-			var userLogin = document.getElementById('userLogin');
-			var userPasswordLogin = document.getElementById('userPasswordLogin');
-			var iosDialog = document.getElementById('iosDialog');
-			var gotoSetPassword = document.getElementById('gotoSetPassword');
-			var userLogout = document.getElementById('userLogout');
-			var userNewPassword = document.getElementById('userNewPassword');
-			var userChangePassword = document.getElementById('userChangePassword');
-			var getNewAccessToken = document.getElementById('getNewAccessToken');
-			var getAuthInfo = document.getElementById('getAuthInfo');
-			var getTakeaAddress = document.getElementById('getTakeaAddress');
-			var getCustomerInfo = document.getElementById('getCustomerInfo');
+    <div class="weui-div">
+      是否中国制造：
+      <label><input name="isMadeInChina" type="radio" value="1" checked/> 是&nbsp;</label>
+      <label><input name="isMadeInChina" type="radio" value="0"/> 否&nbsp;</label>
+    </div>
 
-			// 获取验证码.
-			getSMSCode.addEventListener('click',function() {
-				var userPhoneVul = userPhone.value;
-				if(!userPhoneVul) {
-					console.warn('user phone is not defind');
-					return;
-				}
-				console.log(userPhoneVul);
-				userCenter.getSMSCode({
-					mobile: userPhoneVul,
-					useCase: 'registerOrAccess',
-					strictlyCheck: true,
-					success: function(data) {
-						console.log(data)
-					},
-					error: function(error) {
-						console.log(error)
-					}
-				});
-			});
 
-			// 快捷登录.
-			userLogin.addEventListener('click',function() {
-				var userPhoneVul = userPhone.value;
-				var userCodeVul = userCode.value;
-				if(!userPhoneVul) {
-					console.warn('user phone is not defind');
-					return;
-				}
+    <div class="weui-div">
+      【第三责任险】的赔付额度：
+      <label><input name="liabilityInsurance" type="radio" value="50000" checked/> 5万&nbsp;</label>
+      <label><input name="liabilityInsurance" type="radio" value="100000"/> 10万&nbsp;</label>
+      <label><input name="liabilityInsurance" type="radio" value="200000"/> 20万&nbsp;</label>
+      <label><input name="liabilityInsurance" type="radio" value="300000"/> 30万&nbsp;</label>
+      <label><input name="liabilityInsurance" type="radio" value="500000"/> 50万&nbsp;</label>
+      <label><input name="liabilityInsurance" type="radio" value="1000000"/> 100万&nbsp;</label>
+    </div>
 
-				if(!userCodeVul) {
-					console.warn('user code is not defind');
-					return;
-				}
-				userCenter.register({
-					mobile: userPhoneVul,
-					code: userCodeVul,
-					useCase: "registerOrAccess",
-					success: function(res) {
-						var userinfo = JSON.parse(res).data;
-						console.log(userinfo);
-						if(userinfo.extra === 'setPassword') {
-							gotoSetPassword.href = 'setPassword.html';
-							iosDialog.style.display = 'block';
-						}
-					},
-					error: function(error,xhr) {
-						console.log(xhr)
-					}
-				});
-			});
+    <div class="weui-div">
+      【车身划痕险】的赔付额度：
+      <label><input name="riskOfBodyScratch" type="radio" value="2000" checked/> 2千&nbsp;</label>
+      <label><input name="riskOfBodyScratch" type="radio" value="5000"/> 5千&nbsp;</label>
+      <label><input name="riskOfBodyScratch" type="radio" value="10000"/> 1万&nbsp;</label>
+      <label><input name="riskOfBodyScratch" type="radio" value="20000"/> 2万&nbsp;</label>
+    </div>
 
-			// 密码登录.
-			userPasswordLogin.addEventListener('click', function() {
-				var userPhoneVul = userPhone.value;
-				var userPasswordVul = userPassword.value;
-				if(!userPhoneVul) {
-					console.warn('user phone is not defind');
-					return;
-				}
-				if(!userPasswordVul) {
-					console.warn('user password is not defind');
-					return;
-				}
+  </div>
 
-				userCenter.login({
-					loginName: userPhoneVul,
-					password: userPasswordVul,
-					success: function(data) {
+  <div class="button-wrap">
+    <a href="javascript:;" id="mySubmit" class="weui-btn weui-btn_primary">获取保险明细</a>
+  </div>
+  <div class="weui-calls" id="contents">
+  </div>
+</div>
 
-						console.log(data);
-						alert('登录成功');
-						window.location.reload();
-					},
-					error: function(error,xhr) {
-						console.log(xhr)
-					}
-				});
-			});
 
-			// 退出登录.
-			userLogout.addEventListener('click', function() {
-				userCenter.logout({
-					success: function() {
-						alert('退出成功');
-						window.location.reload();
-					}
-				})
-			});
 
-			//刷新AccessToken。
-			getNewAccessToken.addEventListener('click', function() {
-				var currentDate = new Date();
-				var currentTime = currentDate.getTime();
-				var userInfo = window.localStorage.getItem('userInfo');
-				if(userInfo){
-					var token = JSON.parse(userInfo).accessToken;
-					var expireTime = JSON.parse(userInfo).expireTime;
-				}else{
-					console.warn('You are not logged in');
-					return;
-				}
-				if(currentTime > expireTime) {
-					console.warn('登录超时，请重新登录');
-					return;
-				}
-				userCenter.newAccessToken({
-					success: function(data) {
-						console.log(data);
-						alert('刷新成功');
-						window.location.reload();
-					}
-				})
-			});
+<script id="tpl" type="text/template">
 
-			// 获取用户信息.
-			getAuthInfo.addEventListener('click', function() {
-				var currentDate = new Date();
-				var currentTime = currentDate.getTime();
-				var userInfo = window.localStorage.getItem('userInfo');
-				if(userInfo){
-					var token = JSON.parse(userInfo).accessToken;
-					var expireTime = JSON.parse(userInfo).expireTime;
-				}else{
-					console.warn('You are not logged in');
-					return;
-				}
-				if(currentTime > expireTime) {
-					console.warn('登录超时，请重新登录');
-					return;
-				}
-				userCenter.getAuthInfo({
-					success: function(auth) {
-						console.log(auth);
-					}
-				});
-			});
+  {@each list as it,index}
+  <div class="weui-div weui_temp">
+    <div class="weui-div-L">${it.name}</div>
+    <div class="weui-div-R">${it.value}</div>
+  </div>
+  {@/each}
 
-			// 查询收货地址.
-			getTakeaAddress.addEventListener('click', function() {
-				var currentDate = new Date();
-				var currentTime = currentDate.getTime();
-				var userInfo = window.localStorage.getItem('userInfo');
-				if(userInfo){
-					var token = JSON.parse(userInfo).accessToken;
-					var expireTime = JSON.parse(userInfo).expireTime;
-				}else{
-					console.warn('You are not logged in');
-					return;
-				}
-				if(currentTime > expireTime) {
-					console.warn('登录超时，请重新登录');
-					return;
-				}
+</script>
 
-				userCenter.getTakeaAddress({
-					success: function(auth) {
-						console.log(auth);
-					}
-				});
-			});
 
-			// 查询客户信息.
-			getCustomerInfo.addEventListener('click', function() {
-				var currentDate = new Date();
-				var currentTime = currentDate.getTime();
-				var userInfo = window.localStorage.getItem('userInfo');
-				if(userInfo){
-					var token = JSON.parse(userInfo).accessToken;
-					var expireTime = JSON.parse(userInfo).expireTime;
-				}else{
-					console.warn('You are not logged in');
-					return;
-				}
-				if(currentTime > expireTime) {
-					console.warn('登录超时，请重新登录');
-					return;
-				}
+<script src="./js/require.js" ></script>
+<script src="./js/juicer.js" ></script>
+<script src="./js/ajax-web.js" ></script>
+<script >
 
-				userCenter.getCustomerInfo({
-					success: function(auth) {
-						console.log(auth);
-					}
-				});
+  function getIsPower(evt) {
+    var evt=evt || window.event;
+    var e =evt.srcElement || evt.target;
+    var tempDiv = document.getElementById('capacity');
+    if(e.value=="1"){
+      tempDiv.style.display="none";
+      return
+    }
+    tempDiv.style.display="block";
 
-			});
-		}())
-	</script>
+  }
+
+    (function () {
+
+      require(['./js/car-compute-util'],function (__Compute) {
+
+        var _sellingPrice = document.getElementById('sellingPrice');
+        var _capacity = document.getElementById('capacity');
+        var _province = document.getElementById('province');
+        var _isLessThanSixSeats = document.getElementsByName('isLessThanSixSeats');
+        var _isMadeInChina = document.getElementsByName('isMadeInChina');
+        var _liabilityInsurance = document.getElementsByName('liabilityInsurance');
+        var _riskOfBodyScratch = document.getElementsByName('riskOfBodyScratch');
+        var _isPowerCar = document.getElementsByName('isPower');
+        var _mySubmit = document.getElementById('mySubmit');
+
+
+        var getRadioV = function (radios) {
+          var Val = "";
+          for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+              Val = radios[i].value;
+              break;
+            }
+          }
+          return Val;
+        }
+
+
+        _mySubmit.addEventListener('click', function () {
+          var sellingPrice = _sellingPrice.value;
+          var capacity = _capacity.value;
+          var province = _province.value;
+          var isLessThanSixSeats = Number(getRadioV(_isLessThanSixSeats));
+          var isMadeInChina = Number(getRadioV(_isMadeInChina));
+          var liabilityInsurance = Number(getRadioV(_liabilityInsurance));
+          var riskOfBodyScratch = Number(getRadioV(_riskOfBodyScratch));
+          var isPowerCar = Number(getRadioV(_isPowerCar));
+
+
+          var _list = []
+
+
+          var ccprice=0;
+          //同步
+          __Compute.getVehicleAndVesselTax({
+            capacity:capacity,
+            province:province,
+            success:function (data) {
+              ccprice = data
+            }
+          })
+
+
+          _list.push({
+            name: '购置税',
+            value:isPowerCar ? 0 : __Compute.getPurchaseTax({
+              capacity:capacity,
+              sellingPrice:sellingPrice
+            })
+          },  {
+            name: '交强险',
+            value: __Compute.getTrafficInsurance({
+              isLessThanSixSeats: isLessThanSixSeats
+            })
+          }, {
+            name: '车船税',
+            value:ccprice
+          },{
+            name: '第三者责任险 ',
+            value: __Compute.getLiabilityInsurance({
+              isLessThanSixSeats: isLessThanSixSeats,
+              sumAssured: liabilityInsurance
+            })
+          }, {
+            name: '车辆损失险',
+            value: __Compute.vehicleDamageInsurance({
+              sellingPrice: sellingPrice,
+              isLessThanSixSeats: isLessThanSixSeats
+            })
+          }, {
+            name: '全车盗抢险',
+            value: __Compute.getAllCarRobberInsurance({
+              sellingPrice: sellingPrice,
+              isLessThanSixSeats: isLessThanSixSeats
+            })
+          }, {
+            name: '玻璃单独破碎险 ',
+            value: __Compute.getRiskOfGlassSeparatelyInsurance({
+              sellingPrice: sellingPrice,
+              isMadeInChina: isMadeInChina,
+              isLessThanSixSeats: isLessThanSixSeats
+            })
+          }, {
+            name: '自燃损失险',
+            value: __Compute.getRiskOfSpontaneousCombustion({
+              sellingPrice: sellingPrice
+            })
+          }, {
+            name: '不计免赔特约险',
+            value: __Compute.getExcludingDeductibleSpecialRisks({
+              isLessThanSixSeats: isLessThanSixSeats,
+              sumAssured: liabilityInsurance,
+              sellingPrice: sellingPrice
+            })
+          }, {
+            name: '无过责任险',
+            value: __Compute.getNoLiabilityInsurance({
+              isLessThanSixSeats: isLessThanSixSeats,
+              sumAssured: liabilityInsurance
+            })
+          }, {
+            name: '车上人员责任险',
+            value: __Compute.getPersonnelCarInsurance({
+              isLessThanSixSeats: isLessThanSixSeats,
+              sellingPrice: sellingPrice
+            })
+          }, {
+            name: '车身划痕险',
+            value: __Compute.getRiskOfBodyScratch({
+              sumAssured: riskOfBodyScratch,
+              sellingPrice: sellingPrice
+            })
+          })
+
+          var _total = 0
+          _list.forEach(function (item,index) {
+          	//金额格式化
+            item.value = Math.floor(item.value)
+            _total += Number(item.value)
+
+          })
+
+          _list.push({
+            name:"总金额",
+            value:_total
+          })
+          var data = {
+            list: _list
+          };
+
+          var tpl = document.getElementById('tpl').innerHTML;
+          var html = juicer(tpl, data);
+
+          var  res= document.getElementById('contents');
+          res.innerHTML = html;
+
+
+        });
+
+      })
+
+    }())
+</script>
 </body>
 </html>

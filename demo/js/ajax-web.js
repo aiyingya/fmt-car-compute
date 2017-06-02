@@ -1,19 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /* EG:
 未经测试
  site.ajax({
@@ -33,9 +17,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  }
  )
  */
-var siteEs6 = {
+
+
+let siteEs6 = {
   // ajax函数的默认参数
-  ajaxOptions: {
+  ajaxOptions : {
     url: '#',
     type: 'GET',
     async: true,
@@ -43,7 +29,9 @@ var siteEs6 = {
     data: null,
     dataType: 'text／json',
     header: {},
-    xhr: null
+    xhr: null,
+    success:function () {},
+    fail:function () {}
   },
 
   /**
@@ -71,16 +59,16 @@ var siteEs6 = {
    *     send_error:    发送请求出现错误
    *     status_error:  响应状态不属于 [200,300)&&304
    */
-  request: function request(optionsOverride) {
+  request : function(optionsOverride) {
     function getXHR() {
       if (window.XMLHttpRequest) {
         return new XMLHttpRequest();
       } else {
         //遍历IE中不同版本的ActiveX对象
-        var versions = ["Microsoft", "msxm3", "msxml2", "msxml1"];
-        for (var i = 0; i < versions.length; i++) {
+        let versions = ["Microsoft", "msxm3", "msxml2", "msxml1"];
+        for (let i = 0; i < versions.length; i++) {
           try {
-            var version = versions[i] + ".XMLHTTP";
+            let version = versions[i] + ".XMLHTTP";
             return new ActiveXObject(version);
           } catch (e) {}
         }
@@ -88,93 +76,122 @@ var siteEs6 = {
     }
 
     // 将传入的参数与默认设置合并
-    var options = {};
-    var ajaxOptions = this.ajaxOptions;
-    for (var k in ajaxOptions) {
+    let options = {};
+    let ajaxOptions = siteEs6.ajaxOptions;
+    for (let k in ajaxOptions) {
       options[k] = optionsOverride[k] || ajaxOptions[k];
     }
     options.async = optionsOverride.async === false ? false : true;
-    var xhr = options.xhr = options.xhr || getXHR();
-    return new _promise2.default(function (resolve, reject) {
+    let xhr = options.xhr = options.xhr || getXHR();
       xhr.open(options.type, options.url, options.async);
-      xhr.timeout = options.timeout;
+      // xhr.timeout = options.timeout;
 
       //设置请求头
-      for (var _k in options.header) {
-        xhr.setRuquestHeader(_k, options.header[_k]);
+      for (let k in options.header) {
+        xhr.setRuquestHeader(k, options.header[k]);
       }
 
       // xhr.responseType = options.dataType;
       xhr.onabort = function () {
-        reject(new Error({
-          errorType: 'abort_error',
-          xhr: xhr
-        }));
-      };
+        // reject(new Error({
+        //   errorType: 'abort_error',
+        //   xhr: xhr
+        // }));
+        if(typeof options.fail === 'function' ){
+          options.fail({
+            errorType: 'abort_error',
+            xhr: xhr
+          });
+        }
+      }
       xhr.ontimeout = function () {
-        reject({
-          errorType: 'timeout_error',
-          xhr: xhr
-        });
-      };
+        // reject({
+        //   errorType: 'timeout_error',
+        //   xhr: xhr
+        // });
+        if(typeof options.fail === 'function' ){
+          options.fail({
+            errorType: 'timeout_error',
+            xhr: xhr
+          });
+        }
+
+
+      }
       xhr.onerror = function () {
-        reject({
+        // reject({
+        //   errorType: 'onerror',
+        //   xhr: xhr
+        // })
+        options.fail({
           errorType: 'onerror',
           xhr: xhr
         });
-      };
+      }
       xhr.onreadystatechange = function () {
 
         if (xhr.readyState == 4) {
-          if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+          if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304){
             //响应信息返回后处理，在页面提示用户
-            // const data = result.data || null
-            var data = JSON.parse(xhr.responseText).data || null;
-            resolve(data);
+            const data = JSON.parse(xhr.responseText).data || null
+            // resolve(data);
+            typeof options.success === 'function' && options.success(data)
+
             //JSON.parse(xhr.response)
-          } else {
+          }
+          else{
             //alert("响应失败！");
             var _response_json = {};
             if (xhr.response) {
               try {
                 _response_json = JSON.parse(xhr.response);
               } catch (e) {
-                site.log.debug(e);
+                console.log(e);
               }
             }
             if (_response_json.behavior && _response_json.behavior.content) {
-              // site.modal.error(_response_json.behavior.content);
+              console.error(_response_json.behavior.content);
             } else {
-                // site.modal.error('<a href="javascript:void(0);" style="text-decoration: underline;color: #FFF;" onclick="window.location.reload();">亲~网络不给力。点此刷新重试</a>', null, 60000);
-              }
+              console.error("亲~网络不给力。点此刷新重试")
+            }
 
-            reject({
-              errorType: 'status_error',
-              xhr: xhr
-            });
+            // reject({
+            //   errorType: 'status_error',
+            //   xhr: xhr
+            // })
+            if(typeof options.fail === 'function' ){
+              options.fail({
+                errorType: 'status_error',
+                xhr: xhr
+              });
+            }
           }
         }
         /*else{
          alert("请求未发送！")
          }*/
-      };
+
+      }
 
       try {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("ClientVersion", "10000");
-        var params = options.type === 'GET' ? formatParams(options.data) : (0, _stringify2.default)(options.data);
+        let params =  options.type === 'GET' ? formatParams(options.data) : JSON.stringify(options.data);
         xhr.send(params);
-      } catch (e) {
-        reject({
-          errorType: 'send_error',
-          error: e
-        });
       }
-    });
+      catch (e) {
+        if(typeof options.fail === 'function' ){
+          options.fail({
+            errorType: 'send_error',
+            xhr: xhr
+          });
+        }
+      }
+
 
     function formatParams(data) {
-      var arr = [];
-      for (var name in data) {
+      let arr = [];
+      for (let name in data) {
         arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
       }
       return arr.join('&');
@@ -182,4 +199,4 @@ var siteEs6 = {
   }
 };
 
-exports.default = siteEs6;
+window.__request = siteEs6.request;

@@ -135,6 +135,8 @@ const scratches = {
   }
 }
 
+
+  ;(function($) {
 const ajaxUrl = (config='gqc') => {
   /* 设置请求类型. */
   const Urls = {
@@ -187,7 +189,7 @@ let Compute={
       opts = Object.assign(this.options,opts)
       const [_env,_capacity,_province] = [opts.env , opts.capacity, opts.province]
 
-      __request({
+      return __request({
         url:ajaxUrl(_env)+ `sale/quotation/getCarTax?capacity=${_capacity}&place=${_province}`,
         type:'GET'
       }).then(
@@ -326,16 +328,29 @@ let Compute={
 
       let money = 0
       if(_sellingPrice/10000 < 30) {
-        money = this.data.scratches[_sumAssured].one
+        money = scratches[_sumAssured].one
       }else if(30<= officialPrice/10000 && officialPrice/10000 <= 50) {
-        money = this.data.scratches[_sumAssured].two
+        money = scratches[_sumAssured].two
       }else{
-        money = this.data.scratches[_sumAssured].three
+        money = scratches[_sumAssured].three
       }
       return Number(money)
     }
 
 
 }
+//H5 demo使用
+  window.__Compute = Compute;
+  if (typeof(module) !== 'undefined'){
+    //CommonJS 小程序使用
+    module.exports =  Compute;
+  }else if (typeof define === 'function' && define.amd) {
+    //AMD
+    define([], function () {
+      'use strict';
+      return Compute;
+    });
+  }
+})();
 
-export default  Compute;
+// export default  Compute;

@@ -6,7 +6,9 @@
 
 ```
 import compute from 'fmt-car-compute'
-const vehicleAndVesselTax = compute.getVehicleAndVesselTax({capacity:1.6,place:'上海'})
+compute.getVehicleAndVesselTax({capacity:1.6,place:'上海'}).then(data=>{
+  console.log(data)
+})
 ```
 
 ## promise

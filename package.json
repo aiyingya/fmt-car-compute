@@ -1,6 +1,6 @@
 {
   "name": "fmt-car-compute",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "汽车保险的综合计算",
   "main": "index.js",
   "scripts": {
