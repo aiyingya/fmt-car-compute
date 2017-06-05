@@ -52,7 +52,7 @@
       <label><input name="isPower" type="radio" value="1" onclick="getIsPower()"/> 是&nbsp;</label>
       <label><input name="isPower" type="radio" value="0" checked onclick="getIsPower()"/> 否&nbsp;</label>
     </div>
-    <input id="sellingPrice" class="weui-input" type="number" placeholder="请输入裸车价">
+    <input id="sellingPrice" class="weui-input" type="number" placeholder="请输入裸车价（单位：万元）">
     <input id="capacity" class="weui-input" type="number" placeholder="请输入排量">
     <input id="province" class="weui-input" type="text" placeholder="请输入提车省" value="上海">
 
@@ -156,7 +156,7 @@
 
 
         _mySubmit.addEventListener('click', function () {
-          var sellingPrice = _sellingPrice.value;
+          var sellingPrice = Number(_sellingPrice.value) * 10000;
           var capacity = _capacity.value;
           var province = _province.value;
           var isLessThanSixSeats = Number(getRadioV(_isLessThanSixSeats));
