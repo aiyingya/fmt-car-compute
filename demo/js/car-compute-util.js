@@ -72,7 +72,7 @@ const spuStandard = {
     /**
      * 交强险
      */
-    traffic: 1110,
+    traffic: 1100,
     /**
      * 第三者责任险.
      */
@@ -228,7 +228,7 @@ let Compute={
     const [_sellingPrice,_isLessThanSixSeats] = [opts.sellingPrice , opts.isLessThanSixSeats]
 
     const basis =  _isLessThanSixSeats ? spuStandard.spuUnderSix.vehicleBasis : spuStandard.spuAboveSix.vehicleBasis
-    let money =  basis * _sellingPrice * 0.0128
+    let money =  basis + _sellingPrice * 0.0128
     return Number(money)
   },
   /**
